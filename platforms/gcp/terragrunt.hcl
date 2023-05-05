@@ -7,8 +7,8 @@ remote_state {
 		if_exists = "overwrite"
 	}
 	config = {
-		project = get_env("PROJECT")
-		location = get_env("LOCATION")
+		project = get_env("TF_VAR_project")
+		location = get_env("TF_VAR_location")
 		bucket = get_env("STATE_BUCKET_NAME")
 		prefix = "terragrunt/state"
 
@@ -20,14 +20,14 @@ remote_state {
 }
 
 # Generate the basic provider and versions files. Assumed to be overwritten if needed by modules.
-generate "provider" {
-	path = "provider.tf"
+generate "providers" {
+	path = "providers.tf"
 	if_exists = "overwrite_terragrunt"
 	contents = <<EOF
 provider "google" {
-  project = "${get_env("PROJECT")}"
-  region  = "us-east1"
-  zone    = "us-east1-c"
+  project = "${get_env("TF_VAR_project")}"
+  region  = "${get_env("TF_VAR_region")}"
+  zone    = "${get_env("TF_VAR_zone")}"
 }
 EOF
 }
@@ -58,7 +58,39 @@ generate "main" {
 generate "variables" {
 	path = "variables.tf"
 	if_exists = "skip"
-	contents = ""
+	contents = <<EOF
+variable "labels" {
+	description = "Basic set of labels to be used on any and all supporting resources"
+	type        = map(string)
+	default     = {
+		managed   = "Terragrunt"
+		ephemeral = "true"
+	}
+}
+# variable "project" {
+# 	description = "GCP project"
+# 	type        = string
+# 	default     = ""
+# }
+
+# variable "location" {
+# 	description = "GCP project"
+# 	type        = string
+# 	default     = "US"
+# }
+
+# variable "region" {
+# 	description = "GCP project"
+# 	type        = string
+# 	default     = "us-east1"
+# }
+
+# variable "zone" {
+# 	description = "GCP project"
+# 	type        = string
+# 	default     = "us-east1-c"
+# }
+EOF
 }
 
 generate "outputs" {
