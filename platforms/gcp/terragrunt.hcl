@@ -10,7 +10,7 @@ remote_state {
 		project = get_env("TF_VAR_project")
 		location = get_env("TF_VAR_location")
 		bucket = get_env("STATE_BUCKET_NAME")
-		prefix = "terragrunt/state"
+		prefix = "terragrunt/state/${path_relative_to_include()}"
 
 		gcs_bucket_labels = {
 			name = "state_storage"
@@ -63,7 +63,7 @@ variable "labels" {
 	description = "Basic set of labels to be used on any and all supporting resources"
 	type        = map(string)
 	default     = {
-		managed   = "Terragrunt"
+		managed   = "terragrunt"
 		ephemeral = "true"
 	}
 }

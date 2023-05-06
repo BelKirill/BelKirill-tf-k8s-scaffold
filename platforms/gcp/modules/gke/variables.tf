@@ -3,7 +3,7 @@ variable "labels" {
   description = "Basic set of labels to be used on any and all supporting resources"
   type        = map(string)
   default = {
-    managed   = "Terragrunt"
+    managed   = "terragrunt"
     ephemeral = "true"
   }
 }

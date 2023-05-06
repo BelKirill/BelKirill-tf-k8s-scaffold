@@ -2,6 +2,6 @@
 terraform {
   backend "gcs" {
     bucket = "k8s-belkirill-tf-state"
-    prefix = "terragrunt/state"
+    prefix = "terragrunt/state/modules/gke"
   }
 }
